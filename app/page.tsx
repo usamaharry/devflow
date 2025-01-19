@@ -1,5 +1,3 @@
-const page = () => {
-  return <div>DevFlow</div>;
-};
-
-export default page;
+export default async function Page() {
+  return <div>DevFlow </div>;
+}
