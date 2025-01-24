@@ -27,7 +27,7 @@ interface AuthFormProps<T extends FieldValues> {
   schema: ZodType<T>;
   defaultValues: T;
   onSubmit: (data: T) => Promise<{ success: boolean }>;
-  formType: "SIGN_IN" | "SIGN_UP";
+  formType: "Sign_In" | "Sign_Up";
 }
 
 const AuthForm = <T extends FieldValues>({
@@ -41,9 +41,12 @@ const AuthForm = <T extends FieldValues>({
     defaultValues: defaultValues as DefaultValues<T>,
   });
 
-  const handleSubmit: SubmitHandler<T> = async () => {};
+  const handleSubmit: SubmitHandler<T> = async (data) => {
+    const result = await onSubmit(data);
+    return result;
+  };
 
-  const buttonText = formType === "SIGN_IN" ? "Sign In" : "Sign Up";
+  const buttonText = formType === "Sign_In" ? "Sign In" : "Sign Up";
 
   return (
     <Form {...form}>
@@ -51,11 +54,11 @@ const AuthForm = <T extends FieldValues>({
         onSubmit={form.handleSubmit(handleSubmit)}
         className="mt-10 space-y-6"
       >
-        {Object.keys(defaultValues).map((field) => (
+        {Object.keys(defaultValues).map((key) => (
           <FormField
-            key={field}
+            key={key}
             control={form.control}
-            name={field as Path<T>}
+            name={key as Path<T>}
             render={({ field }) => (
               <FormItem className="flex w-full flex-col gap-2.5">
                 <FormLabel className="paragraph-medium text-dark400_light700">
@@ -88,7 +91,7 @@ const AuthForm = <T extends FieldValues>({
             : buttonText}
         </Button>
 
-        {formType === "SIGN_IN" ? (
+        {formType === "Sign_In" ? (
           <p>
             Don&apos;t have an account?{" "}
             <Link
